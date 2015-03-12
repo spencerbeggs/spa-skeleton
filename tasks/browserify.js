@@ -21,15 +21,13 @@ module.exports = function(opts) {
 		var outputArr = arr[arr.length - 1].split(".");
 		outputArr[0] = outputArr[0] + "-" + pjson.version;
 		output = outputArr.join(".");
-	}
-	else {
+	} else {
 		output = dest;
 	}
 	if (arr.length > 1) {
 		arr.pop();
 		outputPath = arr.join("/");
-	}
-	else {
+	} else {
 		outputPath = "./";
 	}
 	if (!options.src) {
@@ -77,9 +75,7 @@ module.exports = function(opts) {
 				.on("end", function() {
 					// Log when bundling completes
 					logger.end(output);
-					browserSync.reload({
-						stream: true
-					});
+					browserSync.reload();
 				});
 		}
 
