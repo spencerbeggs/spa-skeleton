@@ -1,6 +1,7 @@
 "use strict";
 var config = require("../../config");
 var minify = require("html-minifier").minify;
+var html = require("html");
 
 module.exports = function(req, res, next) {
 	if (config.env === "dev") {
@@ -16,15 +17,24 @@ module.exports = function(req, res, next) {
 			helpers: {
 
 			}
-		}, function(err, html) {
+		}, function(err, htmlText) {
 			if (err) {
 				console.log(err);
 			}
-			var output = minify(html, {
-				collapseWhitespace: (config.env !== "dev") ? true : false,
-				removeComments: (config.env !== "dev") ? true : false,
-				minifyJS: (config.env !== "dev") ? true : false
-			});
+			var output;
+			if (config.env !== "dev") {
+				output = minify(htmlText, {
+					collapseWhitespace: true,
+					removeComments: true,
+					minifyJS: true
+				});
+			} else {
+				output = html.prettyPrint(htmlText, {
+					indent_size: 4,
+					max_char: 0
+				});
+			}
+
 			res.locals = {};
 			return res.send(output);
 		});
