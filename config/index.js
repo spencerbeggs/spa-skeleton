@@ -1,10 +1,11 @@
 "use strict";
 var _ = require("lodash");
+var pjson = require("../package.json");
 
 var config = {};
 config.app = {
 	name: "SPA Skeleton",
-	description: "An opinionated front-to-back stack to bootstrap single-page-app projects. Uses Express, MongoDB, Backbone, Browserify, LESS and Gulp.",
+	description: pjson.description,
 	slug: "app"
 };
 config.env = "unknown";
@@ -29,7 +30,7 @@ if (typeof window === "undefined") {
 }
 
 config.hostname = config.subdomain ? config.subdomain + "." + config.domain : "" + config.domain;
-var thePort = [80, 443].indexOf(config.port) === -1 ? ":" + config.port : "";
-config.url = config.protocol + "://" + config.hostname + thePort;
+config.publicPort = [80, 443].indexOf(config.port) === -1 ? ":" + config.port : "";
+config.url = config.protocol + "://" + config.hostname + config.publicPort;
 
 module.exports = config;

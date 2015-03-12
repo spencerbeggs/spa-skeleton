@@ -1,7 +1,6 @@
 "use strict";
 var http = require("http");
-var config = require("./config/index.js");
-console.log(config);
+var config = require("./config");
 var pjson = require("./package.json");
 var _ = require("lodash");
 var express = require("express");
@@ -29,14 +28,12 @@ if (config.is.dev) {
 app.set("views", __dirname + "/templates");
 app.engine("hbs", hbs.engine);
 app.set("view engine", ".hbs");
-if (config.is.dev && config.browserSync) {
+if (config.is.dev) {
 	app.use("/browser-sync", express.static(__dirname + "/node_modules/browser-sync/node_modules/browser-sync-client/dist"));
 }
 app.use("/js", express.static(__dirname + "/public/js"));
 app.use("/css", express.static(__dirname + "/public/css"));
 app.use("/images", express.static(__dirname + "/public/images"));
-app.use("/fonts", express.static(__dirname + "/public/fonts"));
-app.use("/video", express.static(__dirname + "/public/video"));
 app.use(device.capture());
 app.use(cookieParser());
 app.use(bodyParser.json());

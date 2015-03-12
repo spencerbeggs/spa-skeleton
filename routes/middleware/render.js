@@ -1,12 +1,12 @@
 "use strict";
-var config = require("config");
+var config = require("../../config");
 var minify = require("html-minifier").minify;
 
 module.exports = function(req, res, next) {
 	if (config.env === "dev") {
 		if (config.browserSync) {
 			res.locals.js.body.push({
-				url: config.protocol + "://" + config.hostname + ":5000/browser-sync/browser-sync-client.2.2.3.js",
+				url: "http://" + config.hostname + ":5000/browser-sync/browser-sync-client.2.2.3.js",
 				async: true
 			});
 		}

@@ -1,6 +1,6 @@
 "use strict";
 var browserSync = require("browser-sync");
-var config = require("config");
+var config = require("../config");
 
 module.exports = function(opts) {
 	var options = opts || {};

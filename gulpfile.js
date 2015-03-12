@@ -1,13 +1,10 @@
 /*jshint nonew: false */
 "use strict";
 var gulp = require("gulp");
-var nib = require("nib");
-var maps = require("gulp-sourcemaps");
-var please = require("gulp-pleeease");
 var tasks = require("./tasks");
-var runSequence = require("run-sequence");
 var fs = require("fs");
-var config = require("config");
+var config = require("./config");
+var pjson = require("./package.json");
 
 tasks.nodemon({
 	watch: [
@@ -33,54 +30,49 @@ gulp.task("beautify-less", function() {
 	});
 });
 
-gulp.task("setup", function() {
-	tasks.jshint({
-		src: ["./app/**/*.js"]
-	});
-	tasks.less({
-		name: "less",
-		src: "./less/desktop.less",
-		dest: "public/css/" + config.app.slug + ".css"
-	});
-	tasks.watch({
-		name: "watch-less",
-		src: ["./less/**/*.less"],
-		middleware: ["less"]
-	});
-	tasks.browserify({
-		name: "browserify",
-		src: "./app/desktop.js",
-		dest: "./public/js/" + config.app.slug + ".js"
-	});
-	tasks.watch({
-		name: "watch-js",
-		src: ["./app/**/*.js"]
-	});
-	runSequence("jshint", ["less", "browserify"], ["watch-less", "watch-js"]);
+tasks.jshint({
+	src: ["./app/**/*.js"]
 });
 
-gulp.task("build", function() {
-	tasks.buildCss({
-		name: "build-css",
-		src: "./less/desktop.less",
-		dest: "./public/css/" + config.app.slug + ".css"
-	});
-	tasks.buildJs({
-		name: "build-js",
-		src: "./app/desktop.js",
-		dest: "./public/js/" + config.app.slug + ".js"
-	});
-	runSequence("build-css", "build-js");
+tasks.less({
+	name: "less",
+	src: "./less/desktop.less",
+	dest: "public/css/" + config.app.slug + ".css"
 });
 
-gulp.task("dev", function() {
-	tasks.browserSync({
-		name: "dev-css-reload",
-		src: "./public/css/**/*.css"
-	});
-	runSequence("setup", "dev-css-reload", "nodemon");
+tasks.watch({
+	name: "watch-less",
+	src: ["./less/**/*.less"],
+	middleware: ["less"]
 });
 
-gulp.task("predeploy", function() {
-	runSequence("build");
+tasks.browserify({
+	name: "browserify",
+	src: "./app/desktop.js",
+	dest: "./public/js/" + config.app.slug + ".js"
 });
+
+tasks.watch({
+	name: "watch-js",
+	src: ["./app/**/*.js"]
+});
+
+tasks.buildCss({
+	name: "build-css",
+	src: "./less/desktop.less",
+	dest: "./public/css/" + config.app.slug + ".css"
+});
+
+tasks.buildJs({
+	name: "build-js",
+	src: "./app/desktop.js",
+	dest: "./public/js/" + config.app.slug + ".js"
+});
+
+tasks.browserSync({
+	src: ["public/css/**/*.css", "./public/js/**/*.js"]
+});
+
+gulp.task("build", gulp.series(["build-css", "build-js"]));
+
+gulp.task("dev", gulp.series(["browserify", "less", "nodemon", gulp.parallel(["watch-js", "watch-less", "browser-sync"])]));

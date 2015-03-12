@@ -14,7 +14,6 @@ module.exports = function(opts) {
 		return nodemon({
 				// nodemon our expressjs server
 				script: start,
-
 				// watch core server file(s) that require server restart on change
 				watch: watch,
 				ignore: ignore

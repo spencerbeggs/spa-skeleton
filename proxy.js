@@ -1,6 +1,6 @@
 "use strict";
 
-var config = require("./config/index.js");
+var config = require("./config");
 var http = require("http");
 var proxy = require("dynamic-reverse-proxy")();
 

@@ -1,5 +1,5 @@
 "use strict";
-var config = require("config");
+var config = require("../../config");
 var pjson = require("../../package.json");
 
 module.exports = function(req, res, next) {

@@ -1,18 +1,15 @@
 "use strict";
-var config = require("../config/index.js");
+var config = require("../config");
+var pjson = require("../package.json");
 var less = require("gulp-less");
-var flatten = require("gulp-flatten");
-var prefixer = require("less-plugin-autoprefix");
-var concat = require("gulp-concat");
+var postcss = require("gulp-postcss");
+var autoprefixer = require("gulp-autoprefixer");
 var browserSync = require("browser-sync");
 var gutil = require("gulp-util");
 var prettyHrtime = require("pretty-hrtime");
-var autoprefixer = new prefixer({
-	browsers: ["last 3 versions"]
-});
 var notify = require("gulp-notify");
 var sourcemaps = require("gulp-sourcemaps");
-var pjson = require("../package.json");
+var rename = require("gulp-rename");
 
 function handleErrors() {
 	var args = Array.prototype.slice.call(arguments);
@@ -33,14 +30,10 @@ module.exports = function(opts) {
 	var name = options.name ? options.name : "less";
 	var dest = options.dest ? options.dest : "./";
 	var arr = dest.split("/");
-	var output, outputPath;
-	if (arr[arr.length - 1] !== "") {
-		var outputArr = arr[arr.length - 1].split(".");
-		outputArr[0] = outputArr[0] + "-" + pjson.version;
-		output = outputArr.join(".");
-	} else {
-		output = dest;
-	}
+	var output, outputPath, outputArr, filename;
+	outputArr = arr[arr.length - 1].split(".");
+	outputArr[0] = filename = outputArr[0];
+	output = outputArr.join(".");
 	if (arr.length > 1) {
 		arr.pop();
 		outputPath = arr.join("/");
@@ -67,14 +60,11 @@ module.exports = function(opts) {
 		};
 		logger.start(output);
 		return gulp.src(options.src)
-			.pipe(flatten())
-			.pipe(sourcemaps.init({
-				loadMaps: true
+			.pipe(sourcemaps.init())
+			.pipe(less())
+			.pipe(rename(function(path) {
+				path.basename = filename + "-" + pjson.version;
 			}))
-			.pipe(concat(output))
-			.pipe(less({
-				plugins: [autoprefixer]
-			}).on("error", handleErrors))
 			.pipe(sourcemaps.write("./"))
 			.pipe(gulp.dest(outputPath))
 			.on("end", function() {
