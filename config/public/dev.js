@@ -1,10 +1,15 @@
 "use strict";
 
 var config = {};
+config.app = {
+	name: "Foo",
+	description: "bar",
+	slug: "baz"
+}
 config.env = "dev";
 config.enviornment = "development";
 config.protocol = "http";
-config.domain = "127.0.0.1";
+config.domain = "spencerbeggs.com";
 config.port = 3000;
 config.browserSync = true;
 config.is = {

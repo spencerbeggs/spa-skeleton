@@ -4,9 +4,9 @@ var pjson = require("../package.json");
 
 var config = {};
 config.app = {
-	name: "SPA Skeleton",
+	name: "My Application",
 	description: pjson.description,
-	slug: "app"
+	slug: "spencer"
 };
 config.env = "unknown";
 config.enviornment = "unknown";

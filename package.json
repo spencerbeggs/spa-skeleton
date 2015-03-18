@@ -15,6 +15,7 @@
 	},
 	"dependencies": {
 		"autoprefixer-core": "^5.1.7",
+		"backbone": "^1.1.2",
 		"body-parser": "^1.10.1",
 		"browser-sync": "2.2.3",
 		"compression": "^1.3.0",
@@ -26,6 +27,7 @@
 		"gulp-postcss": "^4.0.3",
 		"html-minifier": "^0.7.0",
 		"lodash": "^3.5.0",
+		"normalize.css": "^3.0.2",
 		"serve-favicon": "^2.2.0"
 	},
 	"browser": {
@@ -72,10 +74,5 @@
 		"vinyl-buffer": "^1.0.0",
 		"vinyl-source-stream": "^1.0.0",
 		"watchify": "^2.2.1"
-	},
-	"subdomain": "suncastio",
-	"domains": [
-		"www.suncast.io",
-		"suncast.io"
-	]
+	}
 }
