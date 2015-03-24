@@ -14,10 +14,10 @@ module.exports = function(req, res, next) {
 	};
 	var suffix = config.env === "dev" ? "" : ".min";
 	res.locals.css.head.push({
-		url: config.url + "/css/" + config.app.slug + "-" + pjson.version + suffix + ".css"
+		url: "/css/" + config.app.slug + "-" + pjson.version + suffix + ".css"
 	});
 	res.locals.js.head.push({
-		url: config.url + "/js/" + config.app.slug + "-" + pjson.version + suffix + ".js"
+		url: "/js/" + config.app.slug + "-" + pjson.version + suffix + ".js"
 	});
 	next();
 };
