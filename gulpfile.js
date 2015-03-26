@@ -6,6 +6,8 @@ var fs = require("fs");
 var config = require("./config");
 var pjson = require("./package.json");
 
+var suffix = config.env === "prod" ? ".min" : "";
+
 tasks.nodemon({
 	watch: [
 		"**/*.js",
@@ -60,13 +62,13 @@ tasks.watch({
 tasks.buildCss({
 	name: "build-css",
 	src: "./less/desktop.less",
-	dest: "./public/css/" + config.app.slug + ".css"
+	dest: "./public/css/" + config.app.slug + suffix + ".css"
 });
 
 tasks.buildJs({
 	name: "build-js",
 	src: "./app/desktop.js",
-	dest: "./public/js/" + config.app.slug + ".js"
+	dest: "./public/js/" + config.app.slug + suffix + ".js"
 });
 
 tasks.browserSync({
