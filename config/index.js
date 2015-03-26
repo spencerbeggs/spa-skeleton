@@ -6,7 +6,7 @@ var config = {};
 config.app = {
 	name: "My Application",
 	description: pjson.description,
-	slug: "spencer"
+	slug: "app"
 };
 config.env = "unknown";
 config.enviornment = "unknown";
