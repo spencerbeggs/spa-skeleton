@@ -7,7 +7,7 @@
 	"author": "C. Spencer Beggs <spencer@beg.gs>",
 	"license": "Private",
 	"scripts": {
-		"start": "node index.js",
+		"start": "npm run build;node index.js",
 		"proxy": "sudo pfctl -evf hooks/pd.conf",
 		"reinstall": "rm -rf node_modules;npm install",
 		"dev": "NODE_ENV=development ./node_modules/gulp/bin/gulp.js dev",
