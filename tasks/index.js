@@ -1,4 +1,6 @@
 "use strict";
+var gulp = require("gulp");
+var config = require("../config");
 
 module.exports.beautify = require("./beautify");
 module.exports.browserify = require("./browserify");
@@ -10,3 +12,40 @@ module.exports.json = require("./json");
 module.exports.less = require("./less");
 module.exports.nodemon = require("./nodemon");
 module.exports.watch = require("./watch");
+module.exports.zone = function(options) {
+
+	var suffix = config.env === "prod" ? ".min" : "";
+
+	module.exports.browserify({
+		name: options.name + "-js",
+		src: "./app/" + options.name + ".js",
+		dest: "./public/js/" + options.name + ".js"
+	});
+
+	module.exports.less({
+		name: options.name + "-less",
+		src: options.css,
+		dest: "public/css/" + options.name + ".css"
+	});
+
+	module.exports.watch({
+		name: "watch-" + options.name + "-css",
+		src: [options.css],
+		middleware: [options.name + "-less"]
+	});
+
+	module.exports.buildJs({
+		name: options.name + "-js-build",
+		src: options.js,
+		dest: "./public/js/" + options.name + suffix + ".js"
+	});
+
+	module.exports.buildCss({
+		name: options.name + "-css-build",
+		src: options.css,
+		dest: "./public/js/" + options.name + suffix + ".js",
+	});
+
+	gulp.task(options.name, gulp.series([options.name + "-js", options.name + "-less"]), gulp.parallel([options.name + "-js", "watch-" + options.name + "-css"]));
+	gulp.task(options.name + "-build", gulp.parallel([options.name + "-js-build", options.name + "-css-build"]));
+};

@@ -36,45 +36,24 @@ tasks.jshint({
 	src: ["./app/**/*.js"]
 });
 
-tasks.less({
-	name: "less",
-	src: "./less/desktop.less",
-	dest: "public/css/" + config.app.slug + ".css"
-});
-
-tasks.watch({
-	name: "watch-less",
-	src: ["./less/**/*.less"],
-	middleware: ["less"]
-});
-
-tasks.browserify({
-	name: "browserify",
-	src: "./app/desktop.js",
-	dest: "./public/js/" + config.app.slug + ".js"
-});
-
-tasks.watch({
-	name: "watch-js",
-	src: ["./app/**/*.js"]
-});
-
-tasks.buildCss({
-	name: "build-css",
-	src: "./less/desktop.less",
-	dest: "./public/css/" + config.app.slug + suffix + ".css"
-});
-
-tasks.buildJs({
-	name: "build-js",
-	src: "./app/desktop.js",
-	dest: "./public/js/" + config.app.slug + suffix + ".js"
-});
-
 tasks.browserSync({
 	src: ["public/css/**/*.css", "./public/js/**/*.js"]
 });
 
-gulp.task("build", gulp.series(["build-css", "build-js"]));
+tasks.zone({
+	name: "backbone",
+	js: "./app/backbone.js",
+	css: "./less/backbone.less"
+});
 
-gulp.task("dev", gulp.series(["browserify", "less", "nodemon", gulp.parallel(["watch-js", "watch-less", "browser-sync"])]));
+tasks.zone({
+	name: "react",
+	js: "./app/react.js",
+	css: "./less/react.less"
+});
+
+gulp.task("dev", gulp.series(gulp.parallel(["react", "backbone"]), "nodemon", "browser-sync"));
+
+gulp.task("build", gulp.parallel("react-build", "backbone-build"));
+
+//gulp.task("build", gulp.series(["build-css", "build-js", "react-js-build", "react-css-build"]));

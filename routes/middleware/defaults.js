@@ -13,11 +13,5 @@ module.exports = function(req, res, next) {
 		body: []
 	};
 	var suffix = config.env === "dev" ? "" : ".min";
-	res.locals.css.head.push({
-		url: "/css/" + config.app.slug + "-" + pjson.version + suffix + ".css"
-	});
-	res.locals.js.head.push({
-		url: "/js/" + config.app.slug + "-" + pjson.version + suffix + ".js"
-	});
 	next();
 };

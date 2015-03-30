@@ -2,6 +2,9 @@
 var express = require("express");
 var router = express.Router();
 var _ = require("lodash");
+var pjson = require("../package.json");
+var config = require("../config");
+var suffix = config.env === "prod" ? ".min" : "";
 
 router.get("/", function(req, res, next) {
 	res.locals.content = {
@@ -13,12 +16,15 @@ router.get("/", function(req, res, next) {
 	next();
 });
 
-router.get("/two", function(req, res, next) {
-	res.locals.content = {
-		title: "This Is the Title",
-		description: "This is the description"
-	};
-	res.locals.pageId = "bar";
+router.get("/react", function(req, res, next) {
+	res.locals.css.head.push({
+		url: "/css/react-" + pjson.version + suffix + ".css",
+	});
+	res.locals.js.body.push({
+		url: "/js/react-" + pjson.version + suffix + ".js",
+		async: true
+	});
+	res.locals.pageId = "react";
 	res.locals.template = "pages/home";
 	next();
 });
