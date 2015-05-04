@@ -7,7 +7,7 @@ module.exports = function(req, res, next) {
 	if (config.env === "dev") {
 		if (config.browserSync) {
 			res.locals.js.body.push({
-				url: "http://" + config.hostname + ":5000/browser-sync/browser-sync-client.2.4.0.js",
+				url: "http://" + config.hostname + ":5003/browser-sync/browser-sync-client.2.4.0.js",
 				async: true
 			});
 		}
