@@ -36,4 +36,33 @@ router.get("/three", function(req, res, next) {
 	next();
 });
 
+var Twitter = require("twitter");
+var gps = require("gps2zip");
+
+var client = new Twitter({
+  consumer_key: "j8hsKOUEwMUVpMplK6Hlw",
+  consumer_secret: "tQNpO12uTdXQpwctFLNi4WOD5nIdS9Q3tuS2uYVAp0",
+  access_token_key: "14632447-8e7J23fAgNr8cnfO3owLDW76t14pGHgRubISdi1E",
+  access_token_secret: "quY6f6nH43tH6mvMEyUQ4NuhffnOv3Ct5QLVU1BlSY"
+});
+
+var tweets = [];
+
+client.stream("statuses/filter", {track: "javascript"}, function(stream) {
+  stream.on("data", function(tweet) {
+		console.log(tweet);
+    tweets.push(tweet);
+  });
+
+  stream.on("error", function(error) {
+    throw error;
+  });
+});
+
+router.get("/tweets", function(req, res, next) {
+	res.locals.tweets = tweets;
+	res.locals.template = "pages/tweets";
+	next();
+});
+
 module.exports = router;
